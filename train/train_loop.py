@@ -19,12 +19,12 @@ def train_loop(
     bocpd_hazard=300.0,
     device='cpu'
 ):
-    if isinstance(price_stream, pd.Series):
-        prices = price_stream.values  # just the spread values
-        dates = price_stream.index    # keep dates for later if you want plotting
-    else:
-        prices = np.asarray(price_stream)
-        dates = None
+    #if isinstance(price_stream, pd.Series):
+    prices = price_stream.values  # just the spread values
+    dates = price_stream.index    # keep dates for later if you want plotting
+    # else:
+    #     prices = np.asarray(price_stream)
+    #     dates = None
 
     # state: recent normalized returns (window)
     rms = RunningMeanStd()
