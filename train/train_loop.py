@@ -18,7 +18,7 @@ def train_loop(price_stream, state_window=50, seq_len_for_vae=50,
     Main training loop using spread series as input.
     price_stream: pandas Series (index = dates, values = spread) or numpy array.
     """
-
+    from util.running_mean_std import RunningMeanStd
     # --- Convert input ---
     if isinstance(price_stream, pd.Series):
         prices = price_stream.values
