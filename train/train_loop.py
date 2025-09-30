@@ -4,6 +4,7 @@ import util.running_mean_std as RunningMeanStd
 import util.weighted_replay_buffer as WeightedReplayBuffer
 import ml_dl_models.rnn_vae as RNNVAEEncoder
 import ml_dl_model.actor_critic as rl
+import structural_break.bocpd as BOCPD
 
 # -------------------------
 # Training loop skeleton
@@ -29,8 +30,8 @@ def train_loop(
     input_dim = 2  # [return, bocpd_prob] per timestep into encoder
     z_dim = 8
     state_dim = state_window  # using flattened returns as state; in practice use richer features
-    actor = Actor(state_dim=state_dim, z_dim=z_dim).to(device)
-    critic = Critic(state_dim=state_dim, z_dim=z_dim).to(device)
+    actor = rl.Actor(state_dim=state_dim, z_dim=z_dim).to(device)
+    critic = rl.Critic(state_dim=state_dim, z_dim=z_dim).to(device)
     encoder = RNNVAEEncoder(input_dim=input_dim, hidden_dim=64, z_dim=z_dim).to(device)
 
     actor_opt = optim.Adam(actor.parameters(), lr=1e-4)
