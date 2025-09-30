@@ -4,7 +4,7 @@ import pandas as pd
 from util.running_mean_std import RunningMeanStd
 from util.weighted_replay_buffer import WeightedReplayBuffer
 from ml_dl_models.rnn_vae import RNNVAEEncoder
-from ml_dl_models.actor_critic import rl
+from ml_dl_models.actor_critic import Actor, Critic
 from structural_break.bocpd import BOCPD
 
 # import util.running_mean_std as RunningMeanStd
@@ -24,12 +24,12 @@ def train_loop(
     bocpd_hazard=300.0,
     device='cpu'
 ):
-    #if isinstance(price_stream, pd.Series):
-    prices = price_stream.values  # just the spread values
-    dates = price_stream.index    # keep dates for later if you want plotting
-    # else:
-    #     prices = np.asarray(price_stream)
-    #     dates = None
+    if isinstance(price_stream, pd.Series):
+        prices = price_stream.values  # just the spread values
+        dates = price_stream.index    # keep dates for later if you want plotting
+    else:
+        prices = np.asarray(price_stream)
+        dates = None
 
     # state: recent normalized returns (window)
     rms = RunningMeanStd()
@@ -37,8 +37,8 @@ def train_loop(
     input_dim = 2  # [return, bocpd_prob] per timestep into encoder
     z_dim = 8
     state_dim = state_window  # using flattened returns as state; in practice use richer features
-    actor = rl.Actor(state_dim=state_dim, z_dim=z_dim).to(device)
-    critic = rl.Critic(state_dim=state_dim, z_dim=z_dim).to(device)
+    actor = Actor(state_dim=state_dim, z_dim=z_dim).to(device)
+    critic = Critic(state_dim=state_dim, z_dim=z_dim).to(device)
     encoder = RNNVAEEncoder(input_dim=input_dim, hidden_dim=64, z_dim=z_dim).to(device)
 
     actor_opt = optim.Adam(actor.parameters(), lr=1e-4)
