@@ -13,6 +13,9 @@ from structural_break.bocpd import BOCPD
 # import ml_dl_models.actor_critic as rl
 # import structural_break.bocpd as BOCPD
 
+def dummy():
+    print("This is Dummy function")
+    return;
 # -------------------------
 # Training loop skeleton
 # -------------------------
