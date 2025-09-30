@@ -13,7 +13,11 @@ import pandas as pd
 # import ml_dl_models.actor_critic as rl
 # import structural_break.bocpd as BOCPD
 
+
 class TT:
+    def __init__(self):
+        return
+        
     def dummy():
         print("This is Dummy function")
         return;
