@@ -13,9 +13,11 @@ import pandas as pd
 # import ml_dl_models.actor_critic as rl
 # import structural_break.bocpd as BOCPD
 
-def dummy():
-    print("This is Dummy function")
-    return;
+class TT:
+    def dummy():
+        print("This is Dummy function")
+        return;
+
 # -------------------------
 # Training loop skeleton
 # -------------------------
