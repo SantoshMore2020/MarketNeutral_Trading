@@ -19,10 +19,12 @@ def train_loop(price_stream, state_window=50, seq_len_for_vae=50,
     price_stream: pandas Series (index = dates, values = spread) or numpy array.
     """
     from util.running_mean_std import RunningMeanStd
+    from structural_break.bocpd import BOCPD
+    from ml_dl_models.rnn_vae import RNNVAEEncoder
     from ml_dl_models.actor_critic import Actor
     from ml_dl_models.actor_critic import Critic
-    from ml_dl_models.rnn_vae import RNNVAEEncoder
-    from structural_break.bocpd import BOCPD
+    
+    
     # --- Convert input ---
     if isinstance(price_stream, pd.Series):
         prices = price_stream.values
