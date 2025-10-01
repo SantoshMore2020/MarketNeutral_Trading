@@ -4,7 +4,8 @@ import torch.nn as nn
 # -------------------------
 # RNN-VAE latent encoder
 # -------------------------
-class RNNVAEEncoder(nn.Module):
+#class RNNVAEEncoder(nn.Module):
+class RNNVAEEncoder:
     def __init__(self, input_dim, hidden_dim=64, z_dim=8, n_layers=1):
         super().__init__()
         self.gru = nn.GRU(input_dim, hidden_dim, num_layers=n_layers, batch_first=True)
