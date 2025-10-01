@@ -4,10 +4,9 @@ import torch.nn as nn
 # -------------------------
 # RNN-VAE latent encoder
 # -------------------------
-#class RNNVAEEncoder(nn.Module):
-class RNNVAEEncoder:
+class RNNVAEEncoder(nn.Module):
     def __init__(self, input_dim, hidden_dim=64, z_dim=8, n_layers=1):
-        #super().__init__()
+        super().__init__()
         self.gru = nn.GRU(input_dim, hidden_dim, num_layers=n_layers, batch_first=True)
         self.fc_mu = nn.Linear(hidden_dim, z_dim)
         self.fc_logvar = nn.Linear(hidden_dim, z_dim)
