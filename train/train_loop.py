@@ -4,7 +4,7 @@ import pandas as pd
 import torch
 
 # Import your helpers
-from ml_dl_models.actor_critic import Actor
+from actor_critic import Actor
 from ml_dl_models.actor_critic import Critic
 from ml_dl_models.rnn_vae import RNNVAEEncoder
 from structural_breaks.bocpd import BOCPD
