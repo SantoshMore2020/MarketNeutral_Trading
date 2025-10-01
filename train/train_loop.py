@@ -75,6 +75,7 @@ def train_loop(
     from ml_dl_models.rnn_vae import RNNVAEEncoder
     from ml_dl_models.actor_critic import Actor
     from ml_dl_models.actor_critic import Critic
+    from util.weighted_replay_buffer import WeightedReplayBuffer
     
     # state: recent normalized returns (window)
     rms = RunningMeanStd()
