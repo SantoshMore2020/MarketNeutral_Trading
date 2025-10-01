@@ -53,7 +53,7 @@ def evaluate_strategy(actor, encoder, price_stream, state_window=50, seq_len_for
     pnl = np.array(pnl)
 
     # === Plot ===
-    plt.figure(figsize=(16,12))
+    plt.figure(figsize=(10,6))
     # plt.plot(pnl, label="Equity Curve") # Comment out the original plot line
     plt.plot_date(dates[state_window+2: len(dates)], pnl, linestyle='-', marker='None', label="Equity Curve") # Use plot_date with dates and pnl
     plt.axhline(y=1, color='r', linestyle='--', label="Buy and Hold Strategy")
