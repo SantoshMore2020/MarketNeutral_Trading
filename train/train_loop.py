@@ -19,6 +19,10 @@ def train_loop(price_stream, state_window=50, seq_len_for_vae=50,
     price_stream: pandas Series (index = dates, values = spread) or numpy array.
     """
     from util.running_mean_std import RunningMeanStd
+    from ml_dl_models.actor_critic import Actor
+    from ml_dl_models.actor_critic import Critic
+    from ml_dl_models.rnn_vae import RNNVAEEncoder
+    from structural_break.bocpd import BOCPD
     # --- Convert input ---
     if isinstance(price_stream, pd.Series):
         prices = price_stream.values
@@ -29,7 +33,7 @@ def train_loop(price_stream, state_window=50, seq_len_for_vae=50,
     rms = RunningMeanStd()
     actor = Actor(state_dim=state_window, latent_dim=8).to(device)
     critic = Critic(state_dim=state_window, latent_dim=8).to(device)
-    encoder = Encoder().to(device)
+    encoder = RNNVAEEncoder().to(device)
     bocpd = BOCPD(hazard=bocpd_hazard)
 
     # TODO: your training logic here
