@@ -26,6 +26,8 @@ def train_loop(
 
     from util.running_mean_std import RunningMeanStd
     from structural_break.bocpd import BOCPD
+    from structural_break.hazard import ConstantHazard
+    from structural_break.distribution import StudentT
     from ml_dl_models.rnn_vae import RNNVAEEncoder
     from ml_dl_models.actor_critic import Actor
     from ml_dl_models.actor_critic import Critic
@@ -33,7 +35,7 @@ def train_loop(
     
     # state: recent normalized returns (window)
     rms = RunningMeanStd()
-    bocpd = BOCPD(hazard_lambda=bocpd_hazard)
+    bocpd = BOCPD(ConstantHazard(bocpd_hazard), StudentT(mu=0, kappa=1, alpha=1, beta=1))
     input_dim = 2  # [return, bocpd_prob] per timestep into encoder
     z_dim = 8
     state_dim = state_window  # using flattened returns as state; in practice use richer features
@@ -66,13 +68,15 @@ def train_loop(
     state_returns = list(returns[idx: idx + state_window])
     idx += state_window
     last_action = 0.0
-
+    prev_rt_mle = 0
+    
     for step in trange(T):
         cur_ret = returns[idx]
         rms.update([cur_ret])
         # BOCPD expects scalar observation -> use normalized return
         norm_ret = float((cur_ret - rms.mean) / (math.sqrt(rms.var) + 1e-8))
         change_prob = bocpd.update(norm_ret)  # float in [0,1]
+        curr_rt_mle = bocpd.rt
         # build encoder input sequence (seq_len_for_vae)
         seq_start = max(0, idx - seq_len_for_vae + 1)
         seq_rets = returns[seq_start: idx + 1]
@@ -113,9 +117,10 @@ def train_loop(
         )
 
         # if change_prob large, upweight recent transitions
-        if change_prob > 0.15:
+        if curr_rt_mle < prev_rt_mle:
             buffer.upweight_recent(window=200, multiplier=1.8)
-
+        prev_rt_mle = curr_rt_mle
+        
         # periodic updates
         if buffer.size() >= 256 and step % 16 == 0:
             batch = buffer.sample(128)
