@@ -2,6 +2,8 @@
 This code is referenced from the GitHub repository: https://github.com/y-bar/bocd/blob/master/bocd/bocd.py
 Author: teramonagi (Nagi Teramo)
 """
+import numpy as np
+
 class Hazard:
     def __call__(self, *args, **kwargs):
         raise NotImplementedError()
