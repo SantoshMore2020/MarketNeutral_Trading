@@ -44,6 +44,7 @@ class BOCPD:
 
         # Calculate Changepoint Probabilities (5 in Algorithm 1)
         self.beliefs[0, 1] = (self.beliefs[: self.T + 1, 0] * pi_t * h).sum()
+        cp_prob = self.beliefs[0, 1]
 
         # Determine Run length Distribution (7 in Algorithm 1)
         self.beliefs[:, 1] = self.beliefs[:, 1] / self.beliefs[:, 1].sum()
@@ -54,6 +55,7 @@ class BOCPD:
         # Update internal state
         self._shift_belief_matrix()
         self.T += 1
+        return cp_prob
 
     @property
     def rt(self):
