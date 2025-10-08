@@ -17,6 +17,8 @@ class Actor(nn.Module):
         )
 
     def forward(self, state, z):
+        if state.dim() > 2:
+            state = state.view(state.size(0), -1)  # flatten time dimension if needed
         x = torch.cat([state, z], dim=-1)
         return self.net(x)
 
