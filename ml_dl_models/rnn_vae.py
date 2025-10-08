@@ -2,9 +2,9 @@ import torch
 import torch.nn as nn
 
 # -------------------------
-# RNN-VAE latent encoder
+# VAE latent encoder
 # -------------------------
-class RNNVAEEncoder(nn.Module):
+class VAEEncoder(nn.Module):
     def __init__(self, input_dim=2, hidden_dim=128, z_dim=16, seq_len=50):
         super().__init__()
         self.seq_len = seq_len
