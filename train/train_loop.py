@@ -182,7 +182,8 @@ def train_loop(
             save_models(save_dir, actor, critic, encoder,
                             actor_opt, critic_opt, opt_vae,
                             bocpd_cfg, meta, step=epoch)
-    
+
+    np.savez(os.path.join(save_dir, "rms_stats.npz"), mean=rms.mean, var=rms.var)
     print("Training complete.")
 
 # # Optional: quick test
